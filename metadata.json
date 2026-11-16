@@ -1,0 +1,6 @@
+{
+  "name": "SuSa studio",
+  "description": "Advanced cloud video & media editing suite with AI automation, real-time team collaboration, shoot location mapping, and cloud rendering.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

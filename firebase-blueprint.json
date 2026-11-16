@@ -1,0 +1,197 @@
+{
+  "entities": {
+    "StudioProject": {
+      "title": "StudioProject",
+      "description": "Cloud video editing project with timeline settings, LUT preset, and geotagged shoot location.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner Firebase Auth UID." },
+        "title": { "type": "string", "description": "Project display title." },
+        "resolution": { "type": "string", "enum": ["4K 60fps", "1080p 60fps", "8K RAW", "9:16 Reels"] },
+        "aspectRatio": { "type": "string", "enum": ["16:9", "9:16", "1:1", "2.39:1"] },
+        "durationSeconds": { "type": "integer", "description": "Timeline duration in seconds." },
+        "status": { "type": "string", "enum": ["editing", "rendering", "ready", "archived"] },
+        "lutPreset": { "type": "string", "description": "Active color grading LUT preset name." },
+        "shootLocationName": { "type": "string", "description": "Primary geotagged shoot location name." },
+        "shootLat": { "type": "number", "description": "Shoot location latitude." },
+        "shootLng": { "type": "number", "description": "Shoot location longitude." },
+        "collaboratorCount": { "type": "integer", "description": "Number of team collaborators." },
+        "proxyEnabled": { "type": "boolean", "description": "Whether 4K/8K proxy workflow is enabled." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp (FieldValue.serverTimestamp())." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp (FieldValue.serverTimestamp())." }
+      },
+      "required": [
+        "userId",
+        "title",
+        "resolution",
+        "aspectRatio",
+        "durationSeconds",
+        "status",
+        "lutPreset",
+        "shootLocationName",
+        "shootLat",
+        "shootLng",
+        "collaboratorCount",
+        "proxyEnabled",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "TimelineClip": {
+      "title": "TimelineClip",
+      "description": "Multi-track clip layer on a StudioProject timeline.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner Firebase Auth UID." },
+        "trackType": { "type": "string", "enum": ["video", "audio", "vfx", "caption"] },
+        "label": { "type": "string", "description": "Clip title or caption text." },
+        "startMs": { "type": "integer", "description": "Timeline start offset in milliseconds." },
+        "durationMs": { "type": "integer", "description": "Clip duration in milliseconds." },
+        "speedMultiplier": { "type": "number", "description": "Speed ramp multiplier (0.25 to 8.0)." },
+        "colorHex": { "type": "string", "description": "Track clip accent color hex." },
+        "mediaUri": { "type": "string", "description": "Optional device Photo Picker URI." },
+        "notes": { "type": "string", "description": "Keyframe, transition, or AI director note." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp." }
+      },
+      "required": [
+        "userId",
+        "trackType",
+        "label",
+        "startMs",
+        "durationMs",
+        "speedMultiplier",
+        "colorHex",
+        "mediaUri",
+        "notes",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ReviewComment": {
+      "title": "ReviewComment",
+      "description": "Timestamped team collaboration review note on a project timeline.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner Firebase Auth UID." },
+        "authorName": { "type": "string", "description": "Reviewer display name." },
+        "timestampMs": { "type": "integer", "description": "Timeline playhead timestamp in milliseconds." },
+        "body": { "type": "string", "description": "Review feedback comment." },
+        "resolved": { "type": "boolean", "description": "Whether feedback is resolved." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp." }
+      },
+      "required": ["userId", "authorName", "timestampMs", "body", "resolved", "createdAt", "updatedAt"]
+    },
+    "RenderJob": {
+      "title": "RenderJob",
+      "description": "Cloud and GPU export pipeline job.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner Firebase Auth UID." },
+        "projectId": { "type": "string", "description": "Target StudioProject ID." },
+        "projectTitle": { "type": "string", "description": "Target project title snapshot." },
+        "profile": { "type": "string", "description": "Export codec and platform profile." },
+        "status": { "type": "string", "enum": ["queued", "rendering", "completed", "cancelled"] },
+        "progressPercent": { "type": "integer", "description": "Progress 0-100." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp." }
+      },
+      "required": ["userId", "projectId", "projectTitle", "profile", "status", "progressPercent", "createdAt", "updatedAt"]
+    },
+    "ShootLocation": {
+      "title": "ShootLocation",
+      "description": "Geotagged film shoot location or studio hub pinned on Google Maps.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner Firebase Auth UID." },
+        "name": { "type": "string", "description": "Location title." },
+        "category": { "type": "string", "enum": ["Exterior", "Studio", "Aerial", "Render Hub"] },
+        "latitude": { "type": "number", "description": "WGS84 latitude." },
+        "longitude": { "type": "number", "description": "WGS84 longitude." },
+        "scoutingNotes": { "type": "string", "description": "Lighting, permit, or camera notes." },
+        "projectId": { "type": "string", "description": "Optional linked project ID." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp." }
+      },
+      "required": ["userId", "name", "category", "latitude", "longitude", "scoutingNotes", "projectId", "createdAt", "updatedAt"]
+    },
+    "SecurityAuditLog": {
+      "title": "SecurityAuditLog",
+      "description": "Append-only security and session audit event log.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner Firebase Auth UID." },
+        "eventType": { "type": "string", "description": "Audit event category." },
+        "deviceLabel": { "type": "string", "description": "Device or platform identifier." },
+        "detail": { "type": "string", "description": "Human-readable audit summary." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp." }
+      },
+      "required": ["userId", "eventType", "deviceLabel", "detail", "createdAt"]
+    },
+    "AiChatThread": {
+      "title": "AiChatThread",
+      "description": "Personal AI assistant conversation thread with model choice and custom instructions.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner Firebase Auth UID." },
+        "title": { "type": "string", "description": "Conversation title." },
+        "modelName": { "type": "string", "enum": ["gemini-3.8-flash", "gemini-3.5-flash-lite"] },
+        "systemInstruction": { "type": "string", "description": "Optional user persona or custom instructions." },
+        "lastMessagePreview": { "type": "string", "description": "Preview of the most recent message." },
+        "messageCount": { "type": "integer", "description": "Number of persisted messages in the thread." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp." }
+      },
+      "required": ["userId", "title", "modelName", "systemInstruction", "lastMessagePreview", "messageCount", "createdAt", "updatedAt"]
+    },
+    "AiChatMessage": {
+      "title": "AiChatMessage",
+      "description": "Single user or model turn inside an AiChatThread.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner Firebase Auth UID." },
+        "role": { "type": "string", "enum": ["user", "model"] },
+        "text": { "type": "string", "description": "Message markdown or plain text content." },
+        "hasImage": { "type": "boolean", "description": "Whether the turn included an image attachment." },
+        "modelName": { "type": "string", "description": "Model identifier used for this turn." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp." }
+      },
+      "required": ["userId", "role", "text", "hasImage", "modelName", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/projects/{projectId}": {
+      "schema": { "$ref": "#/entities/StudioProject" },
+      "description": "User-owned cloud video editing projects."
+    },
+    "/users/{userId}/projects/{projectId}/clips/{clipId}": {
+      "schema": { "$ref": "#/entities/TimelineClip" },
+      "description": "Multi-track timeline clips belonging to a project."
+    },
+    "/users/{userId}/projects/{projectId}/comments/{commentId}": {
+      "schema": { "$ref": "#/entities/ReviewComment" },
+      "description": "Timestamped team review feedback comments."
+    },
+    "/users/{userId}/renderJobs/{jobId}": {
+      "schema": { "$ref": "#/entities/RenderJob" },
+      "description": "Cloud & GPU render queue jobs."
+    },
+    "/users/{userId}/locations/{locationId}": {
+      "schema": { "$ref": "#/entities/ShootLocation" },
+      "description": "Geotagged shoot locations pinned on Google Maps."
+    },
+    "/users/{userId}/auditLogs/{logId}": {
+      "schema": { "$ref": "#/entities/SecurityAuditLog" },
+      "description": "Append-only security audit trail."
+    },
+    "/users/{userId}/aiThreads/{threadId}": {
+      "schema": { "$ref": "#/entities/AiChatThread" },
+      "description": "Personal AI assistant chat threads."
+    },
+    "/users/{userId}/aiThreads/{threadId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/AiChatMessage" },
+      "description": "Messages belonging to a personal AI chat thread."
+    }
+  }
+}
