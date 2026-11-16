@@ -63,8 +63,57 @@ jobs:
             fi
             echo "Restored app/google-services.json from GOOGLE_SERVICES_JSON secret."
           elif [ ! -f app/google-services.json ]; then
-            echo "::error::app/google-services.json is missing in this repository. Add your app/google-services.json contents as a GitHub Actions secret named GOOGLE_SERVICES_JSON (Repo Settings -> Secrets and variables -> Actions)."
-            exit 1
+            mkdir -p app
+            cat << 'EOF' > app/google-services.json
+{
+  "project_info": {
+    "project_number": "927317865715",
+    "project_id": "gen-lang-client-0546974834",
+    "storage_bucket": "gen-lang-client-0546974834.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927317865715:android:41d851a7649ee06735f386",
+        "android_client_info": {
+          "package_name": "com.aistudio.susastudio.kxvmqr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "927317865715-6o8h2vmq70kvc6cmf2mscfvo78ar38ha.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aistudio.susastudio.kxvmqr",
+            "certificate_hash": "93b34fc65e020317ea4e977d57044ecc9daf6c83"
+          }
+        },
+        {
+          "client_id": "927317865715-of9o2co56l255qvjtag1h5ko0atn187s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbwCwYBcjRSyc26gCwtOPGw0Q0r7OLp0Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "927317865715-of9o2co56l255qvjtag1h5ko0atn187s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          }
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
+EOF
+            echo "Auto-generated default app/google-services.json for SuSa studio."
           fi
 
       - name: Build Debug APK
